@@ -6,6 +6,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/time.h>
 
 typedef	struct	s_args
 {
@@ -14,6 +15,13 @@ typedef	struct	s_args
     int			time_to_eat;
     int			time_to_sleep;
 }				t_args;
+
+typedef struct s_var
+{
+    pthread_t       thread;
+    pthread_mutex_t *fork;
+    t_args          philo;
+}               t_var;
 
 int ft_atoi(const char *str);
 
