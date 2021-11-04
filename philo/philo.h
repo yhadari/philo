@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/04 20:51:34 by yhadari           #+#    #+#             */
+/*   Updated: 2021/11/04 20:51:35 by yhadari          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 #define PHILO_H
 
@@ -16,13 +28,14 @@ typedef	struct	s_args
     int			time_to_sleep;
 }				t_args;
 
-typedef struct s_var
+typedef	struct		s_philo
 {
-    pthread_t       thread;
-    pthread_mutex_t *fork;
-    t_args          philo;
-}               t_var;
+    int				id;
+    pthread_t		thread;
+    pthread_mutex_t	*fork;
+    t_args			*args;
+}					t_philo;
 
-int ft_atoi(const char *str);
+int	ft_atoi(const char *str);
 
 #endif
