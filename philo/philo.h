@@ -6,7 +6,7 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 20:51:34 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/04 20:51:35 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/05 18:39:55 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,14 @@ typedef	struct	s_args
     int			time_to_die;
     int			time_to_eat;
     int			time_to_sleep;
+    int         number_philo_eat;        
 }				t_args;
 
 typedef	struct		s_philo
 {
     int				id;
+    long int        time_beginning;
+    long int        time_end;
     pthread_t		thread;
     pthread_mutex_t	*fork;
     t_args			*args;
