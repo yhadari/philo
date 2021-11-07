@@ -1,5 +1,5 @@
 NAME = philo
-S = -g -fsanitize=address
+S = #-g -fsanitize=address
 FT = *.c
 
 all : $(NAME)

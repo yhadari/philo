@@ -6,7 +6,7 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 20:51:34 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/05 18:39:55 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/06 17:20:14 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,9 @@ typedef	struct		s_philo
 {
     int				id;
     long int        time_beginning;
-    long int        time_end;
     pthread_t		thread;
     pthread_mutex_t	*fork;
+    pthread_mutex_t *print;
     t_args			*args;
 }					t_philo;
 
