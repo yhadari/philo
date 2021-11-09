@@ -6,7 +6,7 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 20:51:34 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/06 17:20:14 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/09 16:48:17 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,6 @@ typedef	struct		s_philo
 }					t_philo;
 
 int	ft_atoi(const char *str);
+int	ft_strcmp(char *s1, char *s2);
 
 #endif
