@@ -6,7 +6,7 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:28:11 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/09 17:42:53 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/09 20:14:09 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void *start_thread(void *value)
         gettimeofday(&current_time, NULL);
         philo->time_beginning = current_time.tv_sec*1000+current_time.tv_usec/1000;
         display(philo->print, philo->id, "is eating");
+        philo->number_eat += 1;
         ft_sleep(philo->args->time_to_eat);
         if (philo->id%2 == 0)
             pthread_mutex_unlock(&philo->fork[philo->id%philo->args->number]);
@@ -104,7 +105,7 @@ void	creat_thread(t_philo *philos)
     }
 }
 
-void    creat_mutex(t_philo *philos, t_args *args)
+void    creat_mutex(int argc, t_philo *philos, t_args *args)
 {
     int i;
 
@@ -117,9 +118,25 @@ void    creat_mutex(t_philo *philos, t_args *args)
         philos[i].args = args;
         philos[i].fork = philos->fork;
         philos[i].print = philos->print;
+        if (argc == 6)
+            philos[i].number_eat = 0;
         pthread_mutex_init(&philos->fork[i], NULL);
         i++;
     }
+}
+
+int number_eat(t_philo  *philos)
+{
+    int i;
+
+    i = 0;
+    while (i < philos->args->number)
+    {
+        if (philos[i].number_eat < philos->args->number_philo_eat)
+            return (0);
+        i++;
+    }
+    return (1);
 }
 
 int	main(int argc, char **argv)
@@ -131,11 +148,11 @@ int	main(int argc, char **argv)
     long int    time;
     
     i = 0;
-    if (argc < 5 && write(1, "it should be four/five arguments\n", 33))
+    if (argc != 5 && argc != 6 && write(1, "it should be four/five arguments\n", 33))
         return (0);
     initialize_args(argc, &args, argv);
     philos = malloc(sizeof(t_philo) * args.number);
-    creat_mutex(philos, &args);
+    creat_mutex(argc, philos, &args);
     creat_thread(philos);
     while (1)
     {
@@ -149,6 +166,8 @@ int	main(int argc, char **argv)
                 display(philos->print, philos[i].id, "died");
                 return (0);
             }
+            if (number_eat(philos))
+                return (0);
             i++;
         }
     }
