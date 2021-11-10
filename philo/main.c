@@ -6,11 +6,12 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:28:11 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/09 20:14:09 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/10 17:33:30 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+#include <errno.h>
 
 void    ft_sleep(int time)
 {
@@ -87,9 +88,11 @@ void    initialize_args(int argc, t_args *args, char **argv)
     args->time_to_sleep = ft_atoi(argv[4]);
     if (argc == 6)
         args->number_philo_eat = ft_atoi(argv[5]);
+    else
+        args->number_philo_eat = -1;
 }
 
-void	creat_thread(t_philo *philos)
+void	 creat_thread(t_philo *philos)
 {
     struct timeval current_time;
     int i;
@@ -130,6 +133,8 @@ int number_eat(t_philo  *philos)
     int i;
 
     i = 0;
+    if (philos->args->number_philo_eat == -1)
+        return (0);
     while (i < philos->args->number)
     {
         if (philos[i].number_eat < philos->args->number_philo_eat)
@@ -142,17 +147,21 @@ int number_eat(t_philo  *philos)
 int	main(int argc, char **argv)
 {
     struct timeval current_time;
-    t_args		args;
+    t_args		*args;
     t_philo		*philos;
     int         i;
     long int    time;
     
     i = 0;
-    if (argc != 5 && argc != 6 && write(1, "it should be four/five arguments\n", 33))
+    if (argc != 5 && argc != 6)
+    {
+        write(1, "it should be four/five arguments\n", 33);
         return (0);
-    initialize_args(argc, &args, argv);
-    philos = malloc(sizeof(t_philo) * args.number);
-    creat_mutex(argc, philos, &args);
+    }
+    args = malloc(sizeof(t_args));
+    initialize_args(argc, args, argv);
+    philos = malloc(sizeof(t_philo) * args->number);
+    creat_mutex(argc, philos, args);
     creat_thread(philos);
     while (1)
     {
