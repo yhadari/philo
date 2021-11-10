@@ -6,79 +6,11 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:28:11 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/10 17:33:30 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/10 22:29:11 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <errno.h>
-
-void    ft_sleep(int time)
-{
-    struct timeval current_time;
-    int first_time;
-    int time_now;
-
-    gettimeofday(&current_time, NULL);
-    first_time = current_time.tv_sec*1000+current_time.tv_usec/1000;
-    while (1)
-    {
-        gettimeofday(&current_time, NULL);
-        time_now = current_time.tv_sec*1000+current_time.tv_usec/1000;
-        if (time_now - first_time < time)
-            usleep(60);
-        else
-            return ;
-    }
-}
-
-void    display(pthread_mutex_t *print, int id, char *str)
-{
-    struct timeval current_time;
-    
-    gettimeofday(&current_time, NULL);
-    pthread_mutex_lock(print);
-    printf("%ld %d %s\n", current_time.tv_sec*1000+current_time.tv_usec/1000, id, str);
-    if (ft_strcmp(str, "died") != 0)
-        pthread_mutex_unlock(print);
-}
-
-void *start_thread(void *value)
-{
-    t_philo *philo;
-    struct timeval current_time;
-    
-    philo = (t_philo *) value;
-	while (1)
-	{
-        if (philo->id%2 == 0)
-            pthread_mutex_lock(&philo->fork[philo->id%philo->args->number]);
-        else
-            pthread_mutex_lock(&philo->fork[philo->id - 1]);
-        display(philo->print, philo->id, "has taken a fork");
-        if (philo->id%2 != 0)
-            pthread_mutex_lock(&philo->fork[philo->id%philo->args->number]);
-        else
-            pthread_mutex_lock(&philo->fork[philo->id - 1]);
-        display(philo->print, philo->id, "has taken a fork");
-        gettimeofday(&current_time, NULL);
-        philo->time_beginning = current_time.tv_sec*1000+current_time.tv_usec/1000;
-        display(philo->print, philo->id, "is eating");
-        philo->number_eat += 1;
-        ft_sleep(philo->args->time_to_eat);
-        if (philo->id%2 == 0)
-            pthread_mutex_unlock(&philo->fork[philo->id%philo->args->number]);
-        else
-            pthread_mutex_unlock(&philo->fork[philo->id - 1]);
-        if (philo->id%2 != 0)
-            pthread_mutex_unlock(&philo->fork[philo->id%philo->args->number]);
-        else
-            pthread_mutex_unlock(&philo->fork[philo->id - 1]);
-        display(philo->print, philo->id, "is sleeping");
-        ft_sleep(philo->args->time_to_sleep);
-        display(philo->print, philo->id, "is thinking");
-	}
-}
 
 void    initialize_args(int argc, t_args *args, char **argv)
 {
@@ -146,11 +78,9 @@ int number_eat(t_philo  *philos)
 
 int	main(int argc, char **argv)
 {
-    struct timeval current_time;
     t_args		*args;
     t_philo		*philos;
     int         i;
-    long int    time;
     
     i = 0;
     if (argc != 5 && argc != 6)
@@ -163,22 +93,5 @@ int	main(int argc, char **argv)
     philos = malloc(sizeof(t_philo) * args->number);
     creat_mutex(argc, philos, args);
     creat_thread(philos);
-    while (1)
-    {
-        i = 0;
-        while (i < philos->args->number)
-        {
-            gettimeofday(&current_time, NULL);
-            time = current_time.tv_sec*1000+current_time.tv_usec/1000;
-            if ((time - philos[i].time_beginning) > philos->args->time_to_die)
-            {
-                display(philos->print, philos[i].id, "died");
-                return (0);
-            }
-            if (number_eat(philos))
-                return (0);
-            i++;
-        }
-    }
-    return (0);
+    return (checker(philos));
 }

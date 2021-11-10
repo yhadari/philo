@@ -6,7 +6,7 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/04 20:51:34 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/10 17:24:24 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/10 22:29:55 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,10 @@ typedef	struct		s_philo
 
 int	ft_atoi(const char *str);
 int	ft_strcmp(char *s1, char *s2);
+void    display(pthread_mutex_t *print, int id, char *str);
+void    ft_sleep(int time);
+int checker(t_philo *philos);
+int number_eat(t_philo  *philos);
+void *start_thread(void *value);
 
 #endif
