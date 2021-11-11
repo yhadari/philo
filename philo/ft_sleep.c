@@ -6,7 +6,7 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 22:03:52 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/11 15:05:45 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/11 15:53:55 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void	ft_sleep(int time)
 {
 	struct timeval	current_time;
-	int				first_time;
-	int				time_now;
+	long int		first_time;
+	long int		time_now;
 
 	gettimeofday(&current_time, NULL);
 	first_time = current_time.tv_sec * 1000 + current_time.tv_usec / 1000;

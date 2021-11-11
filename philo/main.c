@@ -6,7 +6,7 @@
 /*   By: yhadari <yhadari@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/01 17:28:11 by yhadari           #+#    #+#             */
-/*   Updated: 2021/11/11 15:00:10 by yhadari          ###   ########.fr       */
+/*   Updated: 2021/11/11 15:54:03 by yhadari          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,15 @@ void	creat_thread(t_philo *philos)
 {
 	struct timeval	current_time;
 	int				i;
-	int				time;
+	long int		time;
 
 	i = 0;
 	while (i < philos->args->number)
 	{
-		time = current_time.tv_sec * 1000 + current_time.tv_usec / 1000;
 		gettimeofday(&current_time, NULL);
-		philos[i].id = i + 1;
+		time = current_time.tv_sec * 1000 + current_time.tv_usec / 1000;
 		philos[i].time_beginning = time;
+		philos[i].id = i + 1;
 		pthread_create(&philos[i].thread, NULL, start_thread, &philos[i]);
 		i++;
 	}
